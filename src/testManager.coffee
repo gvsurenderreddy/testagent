@@ -155,7 +155,7 @@ class TestData extends StormData
             name: {type:"string", required:false}
             destination: {type:"string", required:true}
             type: {type:"string", required:true}            
-            duration : {type:"string", required:false}
+            duration : {type:"number", required:true}
             config: 
                 type: "object"
                 required: false
