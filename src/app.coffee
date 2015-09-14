@@ -3,6 +3,7 @@ util = require('util')
 fs = require 'fs'
 
 testmgr = require('./testManager')
+linkconfigmgr = require('./linkconfigManager')
 
 #Test Specific REST APIs
 testPost = (req,res,next)->   
@@ -26,8 +27,29 @@ testGet = (req,res,next)->
 		res.send result
 		next()
 
-
 testDelete = (req,res,next)->
+
+#Link Specific REST APIs
+linkconfigPost = (req,res,next)->   
+    console.log "REST API - POST /Linkconfig received, body contents - " + JSON.stringify req.body
+    linkconfigmgr.create req.body, (result) =>
+        console.log "POST /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+linkconfigGet = (req,res,next)->   
+    console.log "REST API - GET /Linkconfig received, body contents - " + JSON.stringify req.body
+    linkconfigmgr.get req.params.id,  (result) =>
+        console.log "GET /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+linkconfigList = (req,res,next)->
+	console.log "REST API  GET /Linkconfig received"
+	linkconfigmgr.list (result) =>
+		console.log "list " + JSON.stringify result
+		res.send result
+		next()
 
 
 #---------------------------------------------------------------------------------------#
@@ -44,6 +66,12 @@ server.post '/Test', testPost
 server.get '/Test', testList
 server.get '/Test/:id', testGet
 server.del '/Test/:id', testDelete
+
+server.post '/Linkconfig', linkconfigPost
+server.get '/Linkconfig', linkconfigList
+server.get '/Linkconfig/:id', linkconfigGet
+
+
 
 server.listen 5051,()->
     console.log 'testAgent listening on port : 5051.....'
