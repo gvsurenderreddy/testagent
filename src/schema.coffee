@@ -32,6 +32,36 @@ iperfudpschema =
         packetsize: {"type": "number", "required":false} 
         port: {"type": "number", "required":false} 
 
+
+linkconfigSchema =
+    name: "netem"
+    type: "object"
+    properties:        
+        interface:  {"type":"string", "required":true}       
+        config: 
+            type: "object"
+            required: true
+            properties:        
+                bandwidth:  {"type":"string", "required":true}
+                latency:  {"type":"string", "required":false}
+                jitter:  {"type":"string", "required":false}
+                pktloss:  {"type":"string", "required":false}
+
+testschema =
+    name: "Test"
+    type: "object"
+    properties:
+        name: {type:"string", required:false}
+        destination: {type:"string", required:true}
+        type: {type:"string", required:true}            
+        duration : {type:"number", required:true}
+        config: 
+            type: "object"
+            required: false
+
+
 module.exports.pingschema = pingschema
 module.exports.iperftcpschema = iperftcpschema
 module.exports.iperfudpschema = iperfudpschema
+module.exports.linkconfigSchema = linkconfigSchema
+module.exports.testschema = testschema

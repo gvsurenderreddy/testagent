@@ -1,7 +1,7 @@
 {
 	"name": "testagent",
 	"description": "Test agent for kaanalnet network emulator- performs test with ping, iperf",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": "Suresh Kumar",	
 	"repository": {
 		"type": "git",
@@ -10,10 +10,11 @@
 	"keywords": ["traffic","ping","iperf","test"],
 	"dependencies": {
 	"restify":"4.0.0",	
-	"stormdata": "1.1.7",
-	"stormregistry": "1.1.8",	
-	"json-schema":"0.2.2"
+	"json-schema":"0.2.2",
+	"jfs":"0.2.6",
+	"linuxtcdriver":"*"
 	},
+	"license": "MIT",
 	"devDependencies": {
 		"coffee-script": ">=1.9"
 	},

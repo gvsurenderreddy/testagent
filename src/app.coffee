@@ -44,6 +44,21 @@ linkconfigGet = (req,res,next)->
         res.send result        
         next()
 
+linkconfigDelete = (req,res,next)->   
+    console.log "REST API - GET /Linkconfig received, body contents - " + JSON.stringify req.body
+    linkconfigmgr.del req.params.id,  (result) =>
+        console.log "GET /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+linkconfigStats = (req,res,next)->   
+    console.log "REST API - GET /Linkconfig/:id/stats received, body contents - " + JSON.stringify req.body
+    linkconfigmgr.statistics req.params.id,  (result) =>
+        console.log "GET /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+
 linkconfigList = (req,res,next)->
 	console.log "REST API  GET /Linkconfig received"
 	linkconfigmgr.list (result) =>
@@ -70,6 +85,8 @@ server.del '/Test/:id', testDelete
 server.post '/Linkconfig', linkconfigPost
 server.get '/Linkconfig', linkconfigList
 server.get '/Linkconfig/:id', linkconfigGet
+server.get '/Linkconfig/:id/stats', linkconfigStats
+server.del '/Linkconfig/:id', linkconfigDelete
 
 
 

@@ -1,12 +1,13 @@
-StormRegistry = require 'stormregistry'
-StormData = require 'stormdata'
 util = require('util')
 extend = require('util')._extend
 validate = require('json-schema').validate
+keystore = require('./keystore')
+
 testrunner = require('./testRunner')
 pingschema = require('./schema').pingschema
 iperftcpschema = require('./schema').iperftcpschema
 iperfudpschema = require('./schema').iperfudpschema
+testschema = require('./schema').testschema
 
 #---------------------------------------------------------------
 #utility functions
@@ -113,59 +114,6 @@ parseUDPResult = (data) ->
 
 
 
-#============================================================================================================
-class TestRegistry extends StormRegistry
-    constructor: (filename) ->
-        @on 'load', (key,val) ->
-            #log.debug "restoring #{key} with:",val
-            entry = new TestData key,val
-            if entry?
-                entry.saved = true
-                @add entry
-
-        @on 'removed', (entry) ->
-            entry.destructor() if entry.destructor?
-
-        super filename
-
-    add: (data) ->
-        return unless data instanceof TestData
-        entry = super data.id, data
-
-    update: (data) ->        
-        super data.id, data    
-
-    get: (key) ->
-        entry = super key
-        return unless entry?
-
-        if entry.data? and entry.data instanceof TestData
-            entry.data.id = entry.id
-            entry.data
-        else
-            entry
-
-#============================================================================================================
-
-class TestData extends StormData
-    TestSchema =
-        name: "Test"
-        type: "object"        
-        properties:                        
-            name: {type:"string", required:false}
-            destination: {type:"string", required:true}
-            type: {type:"string", required:true}            
-            duration : {type:"number", required:true}
-            config: 
-                type: "object"
-                required: false
-
-    constructor: (id, data) ->
-        super id, data, TestSchema
-
-#============================================================================================================
-
-
 class Test  
     constructor :() ->        
         @testData = {}        
@@ -216,7 +164,7 @@ class Test
         console.log "ping comands is " + @command      
 
     create : (tdata)->
-        @testData = extend {},tdata.data      
+        @testData = extend {},tdata
         @testData.createdTime = new Date
         @uuid = tdata.id
         util.log "Test created with " + JSON.stringify @testData       
@@ -276,32 +224,29 @@ class Test
 #============================================================================================================
 class TestManager 
     constructor :()->
-        @registry = new TestRegistry
+        @registry = new keystore "TestManager",testschema
+        #@registry = new TestRegistry
         @testObjs = {}
 
-    create :(data, callback)->
-        try    
-            testdata = new TestData null, data    
-        catch err
-            console.log "TestData - invalid schema " + JSON.stringify err
-            return callback new Error "Invalid Schema Input "
-        finally
-            console.log "TestData  created " + JSON.stringify testdata 
-
+    create :(testdata, callback)->
+        id = @registry.add testdata         
+        return callback new Error "invalid Schema" if id instanceof Error or false
+        console.log "new test config created - id " + id
+        testdata.id = id
         #finally create a project                    
         #console.log "Test schema check is passed " + JSON.stringify testdata
         testObj = new Test        
-        result = testObj.create testdata              
+        result = testObj.create testdata
         return callback result if result instanceof Error        
         @testObjs[testObj.uuid] = testObj        
         testObj.run()
-        return callback @registry.add testdata    
+        return callback testdata
 
     del : (id, callback) ->
         obj = @testObjs[id]
         if obj? 
             #remove the registry entry
-            @registry.remove obj.uuid           
+            @registry.del obj.uuid           
             result = obj.del()
             return callback result
         else
