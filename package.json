@@ -12,7 +12,8 @@
 	"restify":"4.0.0",	
 	"json-schema":"0.2.2",
 	"jfs":"0.2.6",
-	"linuxtcdriver":"*"
+	"linuxtcdriver":"*",
+	"mem-db":"0.0.1"	
 	},
 	"license": "MIT",
 	"devDependencies": {

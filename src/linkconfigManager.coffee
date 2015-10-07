@@ -3,7 +3,7 @@ util = require('util')
 extend = require('util')._extend
 validate = require('json-schema').validate
 tcqdisc = require('linuxtcdriver')
-keystore = require('./keystore')
+keystore = require('mem-db')
 linkconfigSchema = require('./schema').linkconfigSchema
 
 #============================================================================================================

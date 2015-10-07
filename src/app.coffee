@@ -88,6 +88,11 @@ server.get '/Linkconfig/:id', linkconfigGet
 server.get '/Linkconfig/:id/stats', linkconfigStats
 server.del '/Linkconfig/:id', linkconfigDelete
 
+# utility functions - 
+#server.post '/writeFile',writeFile
+#server.post '/appendFile',appendFile
+#server.post '/execute', execute
+
 
 
 server.listen 5051,()->

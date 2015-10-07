@@ -1,7 +1,7 @@
 util = require('util')
 extend = require('util')._extend
 validate = require('json-schema').validate
-keystore = require('./keystore')
+keystore = require('mem-db')
 
 testrunner = require('./testRunner')
 pingschema = require('./schema').pingschema
