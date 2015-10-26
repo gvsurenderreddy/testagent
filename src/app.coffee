@@ -4,6 +4,8 @@ fs = require 'fs'
 
 testmgr = require('./testManager')
 linkconfigmgr = require('./linkconfigManager')
+bondingmgr = require('./bondingManager')
+
 
 #Test Specific REST APIs
 testPost = (req,res,next)->   
@@ -66,6 +68,29 @@ linkconfigList = (req,res,next)->
 		res.send result
 		next()
 
+# Bonding APIs
+
+#Link Specific REST APIs
+bondingPost = (req,res,next)->   
+    console.log "REST API - POST /bonding received, body contents - " + JSON.stringify req.body
+    bondingmgr.create req.body, (result) =>
+        console.log "POST /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+bondingGet = (req,res,next)->   
+    console.log "REST API - GET /Linkconfig received, body contents - " + JSON.stringify req.body
+    bondingmgr.get req.params.id,  (result) =>
+        console.log "GET /Linkconfig result " + JSON.stringify result 
+        res.send result        
+        next()
+
+bondingList = (req,res,next)->
+    console.log "REST API  GET /Linkconfig received"
+    bondingmgr.list (result) =>
+        console.log "list " + JSON.stringify result
+        res.send result
+        next()
 
 #---------------------------------------------------------------------------------------#
 # REST Server routine starts here
@@ -87,6 +112,10 @@ server.get '/Linkconfig', linkconfigList
 server.get '/Linkconfig/:id', linkconfigGet
 server.get '/Linkconfig/:id/stats', linkconfigStats
 server.del '/Linkconfig/:id', linkconfigDelete
+
+server.post '/bonding', bondingPost
+server.get '/bonding', bondingList
+server.get '/bonding/:id', bondingGet
 
 # utility functions - 
 #server.post '/writeFile',writeFile

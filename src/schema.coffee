@@ -60,8 +60,26 @@ testschema =
             required: false
 
 
+bondingSchema =
+    name: "bonding"
+    type: "object"
+    properties:
+        bondname: {type:"string", required:true}
+        ipaddress: {type:"string", required:true}
+        gateway : {type:"string", required:false}
+        interfaces: 
+            type: "array"
+            required: true
+            items:
+                type:"string"
+                required:true
+
+
+
+
 module.exports.pingschema = pingschema
 module.exports.iperftcpschema = iperftcpschema
 module.exports.iperfudpschema = iperfudpschema
 module.exports.linkconfigSchema = linkconfigSchema
 module.exports.testschema = testschema
+module.exports.bondingSchema = bondingSchema

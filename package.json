@@ -13,7 +13,8 @@
 	"json-schema":"0.2.2",
 	"jfs":"0.2.6",
 	"linuxtcdriver":"*",
-	"mem-db":"0.0.1"	
+	"mem-db":"0.0.1",
+	"async":"*"
 	},
 	"license": "MIT",
 	"devDependencies": {
