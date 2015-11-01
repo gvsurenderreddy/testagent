@@ -1,7 +1,7 @@
 {
 	"name": "testagent",
 	"description": "Test agent for kaanalnet network emulator- performs test with ping, iperf",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"author": "Suresh Kumar",	
 	"repository": {
 		"type": "git",
@@ -13,7 +13,7 @@
 	"json-schema":"0.2.2",
 	"jfs":"0.2.6",
 	"linuxtcdriver":"*",
-	"mem-db":"0.0.1",
+	"mem-db":"0.0.2",
 	"async":"*"
 	},
 	"license": "MIT",

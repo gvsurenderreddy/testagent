@@ -1,14 +1,39 @@
 # testagent
-Traffic agent for icmp,tcp,udp,voice,video,http traffic. 
-Intenrally it uses, ping,iperf tools for triggering the traffic.
-It exposes REST API for start the test, get the status.
-By default, REST server is running on Port 5051
+KaanalNet Test Agent application. It supports the Traffic test capability, Link Characteristics Configuration (TC), Link Bonding configuration.
+Supports REST API 
+REST server is running on Port 5051
+
+
+## Traffic Test:
+  Supports PING,TCP,UDP traffic. Intenrally it uses, linux ping,iperf tools for triggering the traffic.
 
 iperf must be installed on the system.
 
-Example:
+### TEST API Details:
 
-Executes the  PING TEST
+1. POST /Test         
+
+Request Data :
+
+      {
+        "name":"test1",
+        "destination":"10.0.3.4",
+        "type":"ping",
+        "duration":"60",
+        "config":
+        {
+        }
+    }
+
+
+type indicates type of test such as "ping","tcp","udp". Config object is optional test specific configuration. 
+
+2. GET /Test/:testid
+Returns the test status.
+
+### Example:
+
+#### Executes the  PING TEST
 ---
 Workflow: 
 1. Post the new Test with type "ping" , refer ping man page for the configuration.
@@ -19,7 +44,8 @@ A. post the ping test
 POST /Test
 
 Request Data :
-{
+
+    {
     "name":"pingtest",
     "destination":"localhost",
     "type":"ping",
@@ -31,13 +57,14 @@ Request Data :
         "count":60,
         "packetsize":100
     }
-}
+    }
 
 
 Response Data :
-{
-  "id": "fe770b56-1a31-4df3-831e-86a216d80c21",
-  "data": {
+
+    {
+    "id": "fe770b56-1a31-4df3-831e-86a216d80c21",
+    "data": {
     "name": "pingtest",
     "destination": "localhost",
     "type": "ping",
@@ -48,9 +75,9 @@ Response Data :
       "count": 60,
       "packetsize": 100
     }
-  },
-  "saved": false
-}
+    },
+    "saved": false
+    }
 
 B. Get the status of the PingTest
 
@@ -58,21 +85,22 @@ Get /Test/fe770b56-1a31-4df3-831e-86a216d80c21
 http://localhost:5051/Test/fe770b56-1a31-4df3-831e-86a216d80c21
 
 Response Data :
-{
-  "config": {
+
+    {
+    "config": {
     "flood": "no",
     "adaptive": "yes",
     "count": 60,
     "packetsize": 100
-  },
-  "duration": "60",
-  "type": "ping",
-  "destination": "localhost",
-  "name": "pingtest",
-  "createdTime": "2015-09-01T08:58:37.588Z",
-  "startedTime": "2015-09-01T08:58:37.589Z",
-  "status": "completed",
-  "testResult": {
+    },
+    "duration": "60",
+    "type": "ping",
+    "destination": "localhost",
+    "name": "pingtest",
+    "createdTime": "2015-09-01T08:58:37.588Z",
+    "startedTime": "2015-09-01T08:58:37.589Z",
+    "status": "completed",
+    "testResult": {
     "transmitted": "60 packets transmitted",
     "received": " 60 received",
     "packetloss": " 0% packet loss",
@@ -83,19 +111,17 @@ Response Data :
     "rtt_mdev": "rtt min/avg/max/mdev = 0.044/0.063/0.101/0.010 ms",
     "ipg": " ipg/ewma 200.321/0.066 ms",
     "ewma": " ipg/ewma 200.321/0.066 ms"
-  },
-  "completedTime": "2015-09-01T08:58:49.427Z"
-}
+    },
+    "completedTime": "2015-09-01T08:58:49.427Z"
+    }
 
+#### Executes the UDP Test
 
+1. POST UDP
 
-Executes the UDP Test
---
+Request Data:
 
-1.
-POST UDP
-
-{
+    {
     "name":"udptest",
     "destination":"localhost",
     "type":"udp",
@@ -105,13 +131,13 @@ POST UDP
         "bandwidth":"10Mb",
         "packetsize":1000
     }
-}
+    }
 
 Response:
 
-{
-  "id": "e720612f-406b-45ee-8248-2ca93a0d92ef",
-  "data": {
+    {
+    "id": "e720612f-406b-45ee-8248-2ca93a0d92ef",
+    "data": {
     "name": "udptest",
     "destination": "localhost",
     "type": "udp",
@@ -120,27 +146,27 @@ Response:
       "bandwidth": "10Mb",
       "packetsize": 1000
     }
-  },
-  "saved": false
-}
+    },
+    "saved": false
+    }
 
 2. Get Test Status
 
 Response Data:
 
-{
-  "config": {
+    {
+    "config": {
     "bandwidth": "10Mb",
     "packetsize": 1000
-  },
-  "duration": "300",
-  "type": "udp",
-  "destination": "localhost",
-  "name": "udptest",
-  "createdTime": "2015-09-01T09:03:42.057Z",
-  "startedTime": "2015-09-01T09:03:42.057Z",
-  "status": "completed",
-  "testResult": {
+    },
+    "duration": "300",
+     "type": "udp",
+    "destination": "localhost",
+    "name": "udptest",
+    "createdTime": "2015-09-01T09:03:42.057Z",
+    "startedTime": "2015-09-01T09:03:42.057Z",
+    "status": "completed",
+    "testResult": {
     "sender_date": "20150901143842",
     "sender_senderip": "127.0.0.1",
     "sender_senderport": "32856",
@@ -164,27 +190,28 @@ Response Data:
     "reported_totaldatagrams": "39325",
     "reported_unknown1": "0.000",
     "reported_unknown2": "0"
-  },
-  "completedTime": "2015-09-01T09:08:42.100Z"
-}
+    },
+    "completedTime": "2015-09-01T09:08:42.100Z"
+    }
 
 2.Get Test status
 
 Get http://localhost:5051/Test/58645f45-7a5a-40ba-a2ea-3254bb19d571
-{
-  "config": {
+
+    {
+    "config": {
     "windowsize": 100,
     "packetsize": 100,
     "port": 5001
-  },
-  "duration": "30",
-  "type": "tcp",
-  "destination": "localhost",
-  "name": "tcptest",
-  "createdTime": "2015-09-01T09:08:13.404Z",
-  "startedTime": "2015-09-01T09:08:13.405Z",
-  "status": "completed",
-  "testResult": {
+    },
+    "duration": "30",
+    "type": "tcp",
+    "destination": "localhost",
+    "name": "tcptest",
+    "createdTime": "2015-09-01T09:08:13.404Z",
+    "startedTime": "2015-09-01T09:08:13.405Z",
+    "status": "completed",
+    "testResult": {
     "date": "20150901143843",
     "senderip": "127.0.0.1",
     "senderport": "53454",
@@ -194,6 +221,31 @@ Get http://localhost:5051/Test/58645f45-7a5a-40ba-a2ea-3254bb19d571
     "interval": "0.0-30.0",
     "transfer": "206460800",
     "bandwidth": "55046022\n"
-  },
-  "completedTime": "2015-09-01T09:08:43.451Z"
-}
+    },
+    "completedTime": "2015-09-01T09:08:43.451Z"
+    }
+
+
+## Link Bonding Configuration
+
+Creates a Linux Link bonding used for LACP(Link Aggregation Control Protcol).
+
+REST API
+
+1.   Post /bonding
+
+POST  http://10.0.3.2:5051/bonding
+Request Data :
+
+        { 
+        "bondname":"bond0",
+        "ipaddress":"10.10.10.2",
+        "interfaces":["eth1","eth2"]
+        }
+
+Response Data:
+
+        {
+        "id": "uuid",
+        "status": "created"
+        }
