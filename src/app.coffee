@@ -5,7 +5,6 @@ fs = require 'fs'
 testmgr = require('./testManager')
 linkconfigmgr = require('./linkconfigManager')
 bondingmgr = require('./bondingManager')
-vlanmgr = require('./vlanManager')
 
 
 #Test Specific REST APIs

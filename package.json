@@ -1,7 +1,7 @@
 {
 	"name": "testagent",
 	"description": "Test agent for kaanalnet network emulator- performs test with ping, iperf",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"author": "Suresh Kumar",	
 	"repository": {
 		"type": "git",
