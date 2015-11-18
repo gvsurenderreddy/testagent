@@ -65,6 +65,7 @@ bondingSchema =
     type: "object"
     properties:
         bondname: {type:"string", required:true}
+        bondmac: {type:"string", required:true}
         ipaddress: {type:"string", required:true}
         gateway : {type:"string", required:false}
         interfaces: 

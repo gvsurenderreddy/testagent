@@ -23,6 +23,16 @@ createbonding = (config, callback)->
                     callback(null,"create bonding interface success") 
         ,
         (callback)=>
+            console.log "assign mac address to bonding interface"
+            command = "ip link set #{config.bondname} address #{config.bondmac}"            
+            testrunner.runCommand command,(result)=>
+                console.log "Result ", result
+                if result instanceof Error
+                    callback new Error ('assign mac address bonding interface') 
+                else
+                    callback(null,"assign bonding mac address success") 
+        ,        
+        (callback)=>
             console.log "attaching ethernet interfaces to bond interface"
             console.log config.interfaces
             async.each config.interfaces, (ifname,callback) =>
@@ -75,6 +85,7 @@ createbonding = (config, callback)->
 
 
 #ip link add bond0 type bond
+#ip link set bond0 address <bond-mac-address>'
 #ip link set eth1 down
 #ip link set eth2 down
 #ip link set eth1 master bond0
